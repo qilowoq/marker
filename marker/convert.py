@@ -93,7 +93,7 @@ def convert_single_pdf(
         spell_lang,
         max_pages=max_pages,
         use_ocr=use_ocr,
-        parallel=int(parallel_factor * settings.OCR_PARALLEL_WORKERS)
+        parallel=1,
     )
 
     out_meta["toc"] = toc
