@@ -81,7 +81,7 @@ def get_single_page_blocks(doc, pnum: int, tess_lang: str, spellchecker: Optiona
     return page_blocks
 
 
-def convert_single_page(doc, pnum, tess_lang: str, spell_lang: Optional[str], no_text: bool, disable_ocr: bool = False, use_ocr: bool=None, min_ocr_page: int = 2):
+def convert_single_page(doc, pnum, tess_lang: str, spell_lang: Optional[str], no_text: bool, use_ocr: bool=None, min_ocr_page: int = 2):
     ocr_pages = 0
     ocr_success = 0
     ocr_failed = 0
@@ -100,8 +100,7 @@ def convert_single_page(doc, pnum, tess_lang: str, spell_lang: Optional[str], no
             or
             (len(page_obj.prelim_text) > 0 and detect_bad_ocr(page_obj.prelim_text, spellchecker))  # Bad OCR
         ),
-        min_ocr_page < pnum < len(doc) - 1,
-        not disable_ocr
+        min_ocr_page < pnum < len(doc) - 1
     ]
     if all(conditions) or use_ocr:
         page = doc[pnum]
@@ -115,7 +114,7 @@ def convert_single_page(doc, pnum, tess_lang: str, spell_lang: Optional[str], no
     return page_obj, {"ocr_pages": ocr_pages, "ocr_failed": ocr_failed, "ocr_success": ocr_success}
 
 
-def get_text_blocks(doc, tess_lang: str, spell_lang: Optional[str], max_pages: Optional[int] = None, use_ocr: bool=None, parallel: int = settings.OCR_PARALLEL_WORKERS):
+def get_text_blocks(doc, tess_lang: str, spell_lang: Optional[str], max_pages: Optional[int] = None, use_ocr: bool=False, parallel: int = settings.OCR_PARALLEL_WORKERS):
     all_blocks = []
     toc = doc.get_toc()
     ocr_pages = 0
