@@ -44,7 +44,7 @@ class Settings(BaseSettings):
     # OCR
     INVALID_CHARS: List[str] = [chr(0xfffd), "�"]
     OCR_DPI: int = 400
-    TESSDATA_PREFIX: str = "/usr/share/tesseract-ocr/4.00/tessdata"
+    TESSDATA_PREFIX: str = "/usr/share/tesseract-ocr/5/tessdata"
     TESSERACT_LANGUAGES: Dict = {
         "English": "eng",
         "Spanish": "spa",
