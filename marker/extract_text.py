@@ -81,7 +81,7 @@ def get_single_page_blocks(doc, pnum: int, tess_lang: str, spellchecker: Optiona
     return page_blocks
 
 
-def convert_single_page(doc, pnum, tess_lang: str, spell_lang: Optional[str], no_text: bool, disable_ocr: bool = False, min_ocr_page: int = 2):
+def convert_single_page(doc, pnum, tess_lang: str, spell_lang: Optional[str], no_text: bool, disable_ocr: bool = False, use_ocr: bool=None, min_ocr_page: int = 2):
     ocr_pages = 0
     ocr_success = 0
     ocr_failed = 0
@@ -103,7 +103,7 @@ def convert_single_page(doc, pnum, tess_lang: str, spell_lang: Optional[str], no
         min_ocr_page < pnum < len(doc) - 1,
         not disable_ocr
     ]
-    if all(conditions) or settings.OCR_ALL_PAGES:
+    if all(conditions) or use_ocr:
         page = doc[pnum]
         blocks = get_single_page_blocks(doc, pnum, tess_lang, spellchecker, ocr=True)
         page_obj = Page(blocks=blocks, pnum=pnum, bbox=page_bbox, rotation=page.rotation)
@@ -115,7 +115,7 @@ def convert_single_page(doc, pnum, tess_lang: str, spell_lang: Optional[str], no
     return page_obj, {"ocr_pages": ocr_pages, "ocr_failed": ocr_failed, "ocr_success": ocr_success}
 
 
-def get_text_blocks(doc, tess_lang: str, spell_lang: Optional[str], max_pages: Optional[int] = None, parallel: int = settings.OCR_PARALLEL_WORKERS):
+def get_text_blocks(doc, tess_lang: str, spell_lang: Optional[str], max_pages: Optional[int] = None, use_ocr: bool=None, parallel: int = settings.OCR_PARALLEL_WORKERS):
     all_blocks = []
     toc = doc.get_toc()
     ocr_pages = 0
@@ -127,7 +127,7 @@ def get_text_blocks(doc, tess_lang: str, spell_lang: Optional[str], max_pages: O
     if max_pages:
         range_end = min(max_pages, len(doc))
     with ThreadPoolExecutor(max_workers=parallel) as pool:
-        args_list = [(doc, pnum, tess_lang, spell_lang, no_text) for pnum in range(range_end)]
+        args_list = [(doc, pnum, tess_lang, spell_lang, no_text, use_ocr) for pnum in range(range_end)]
         if parallel == 1:
             func = map
         else:
