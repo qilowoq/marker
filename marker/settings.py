@@ -26,7 +26,7 @@ class Settings(BaseSettings):
 
         return "cpu"
 
-    INFERENCE_RAM: int = 40 # How much VRAM each GPU has (in GB).
+    INFERENCE_RAM: int = 5 # How much VRAM each GPU has (in GB).
     VRAM_PER_TASK: float = 2.5 # How much VRAM to allocate per task (in GB).  Peak marker VRAM usage is around 3GB, but avg across workers is lower.
     DEFAULT_LANG: str = "English" # Default language we assume files to be in, should be one of the keys in TESSERACT_LANGUAGES
 
@@ -44,7 +44,7 @@ class Settings(BaseSettings):
     # OCR
     INVALID_CHARS: List[str] = [chr(0xfffd), "�"]
     OCR_DPI: int = 400
-    TESSDATA_PREFIX: str = ""
+    TESSDATA_PREFIX: str = "/usr/share/tesseract-ocr/4.00/tessdata"
     TESSERACT_LANGUAGES: Dict = {
         "English": "eng",
         "Spanish": "spa",
@@ -71,8 +71,8 @@ class Settings(BaseSettings):
         "Hindi": None,
     }
     OCR_ALL_PAGES: bool = False # Run OCR on every page even if text can be extracted
-    OCR_PARALLEL_WORKERS: int = 2 # How many CPU workers to use for OCR
-    OCR_ENGINE: str = "ocrmypdf" # Which OCR engine to use, either "tesseract" or "ocrmypdf".  Ocrmypdf is higher quality, but slower.
+    OCR_PARALLEL_WORKERS: int = 1 # How many CPU workers to use for OCR
+    OCR_ENGINE: str = "tesseract" # Which OCR engine to use, either "tesseract" or "ocrmypdf".  Ocrmypdf is higher quality, but slower.
 
     # Texify model
     TEXIFY_MODEL_MAX: int = 384 # Max inference length for texify
