@@ -23,7 +23,7 @@ def ocr_entire_page(page, lang: str, spellchecker: Optional[SpellChecker] = None
 
 def ocr_entire_page_tess(page, lang: str, spellchecker: Optional[SpellChecker] = None) -> List[Block]:
     try:
-        full_tp = page.get_textpage_ocr(flags=settings.TEXT_FLAGS, dpi=settings.OCR_DPI, full=True, language=lang)
+        full_tp = page.get_textpage_ocr(flags=settings.TEXT_FLAGS, dpi=settings.OCR_DPI, full=True, language=lang, tessdata=settings.TESSDATA_PREFIX)
         blocks = page.get_text("dict", sort=True, flags=settings.TEXT_FLAGS, textpage=full_tp)["blocks"]
         full_text = page.get_text("text", sort=True, flags=settings.TEXT_FLAGS, textpage=full_tp)
 
