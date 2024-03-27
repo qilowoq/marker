@@ -60,6 +60,7 @@ def convert_single_pdf(
         model_lst: List,
         max_pages=None,
         metadata: Optional[Dict]=None,
+        use_ocr: bool=False,
         parallel_factor: int = 1
 ) -> Tuple[str, Dict]:
     lang = settings.DEFAULT_LANG
@@ -91,6 +92,7 @@ def convert_single_pdf(
         tess_lang,
         spell_lang,
         max_pages=max_pages,
+        use_ocr=use_ocr,
         parallel=int(parallel_factor * settings.OCR_PARALLEL_WORKERS)
     )
 
